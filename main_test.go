@@ -14,4 +14,6 @@ func TestDebugPrint(t *testing.T) {
 	DebugPrint("Test1\r\n", "Test2\r\n")
 	DebugPrint("=============")
 	DebugPrint(123, 456)
+	DebugPrint("=============")
+	DebugPrint("", "t")
 }

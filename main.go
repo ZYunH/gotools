@@ -23,7 +23,8 @@ func DebugPrint(args ...interface{}) {
 			dataAsSlice := *(*[]byte)(unsafe.Pointer(dataAddr))
 			dataAsSliceLen := *(*int)(unsafe.Pointer(dataAddr + sizeOfInt))
 
-			if !(dataAsSlice[dataAsSliceLen-1] == 10 && dataAsSlice[dataAsSliceLen-2] == 13) {
+			if dataAsSliceLen >= 2 && !(dataAsSlice[dataAsSliceLen-1] == 10 && dataAsSlice[dataAsSliceLen-2] == 13) {
+				// Not include CRLF
 				print(fmt.Sprint(v), " ")
 			} else {
 				print(fmt.Sprint(v))
@@ -41,7 +42,7 @@ func includeCRLF(i interface{}) bool {
 	switch v := i.(type) {
 	case string:
 		L := len(v)
-		if v[L-1] == 10 && v[L-2] == 13 {
+		if L >= 2 && (v[L-1] == 10 && v[L-2] == 13) {
 			return true
 		}
 	}
