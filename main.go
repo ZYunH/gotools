@@ -9,7 +9,7 @@ var sizeOfInt = unsafe.Sizeof(0)
 
 // Simple print function used for debug
 func DebugPrint(args ...interface{}) {
-	if args[len(args)-1] != "\r\n" {
+	if !includeCRLF(args[len(args)-1]) {
 		args = append(args, "\r\n")
 	}
 
@@ -29,9 +29,23 @@ func DebugPrint(args ...interface{}) {
 				print(fmt.Sprint(v))
 			}
 		default:
-			print(fmt.Sprint(v))
+			print(fmt.Sprint(v), " ")
 		}
 	}
+}
+
+func includeCRLF(i interface{}) bool {
+	if i == "\r\n" {
+		return true
+	}
+	switch v := i.(type) {
+	case string:
+		L := len(v)
+		if v[L-1] == 10 && v[L-2] == 13 {
+			return true
+		}
+	}
+	return false
 }
 
 // Not used, for read only

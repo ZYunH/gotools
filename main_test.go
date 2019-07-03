@@ -9,5 +9,9 @@ func TestDebugPrint(t *testing.T) {
 	DebugPrint("=============")
 	DebugPrint("Test1", "\r\n", "Test2")
 	DebugPrint("=============")
+	DebugPrint("Test1", "\r\n", "Test2","\r\n")
+	DebugPrint("=============")
 	DebugPrint("Test1\r\n", "Test2\r\n")
+	DebugPrint("=============")
+	DebugPrint(123, 456)
 }
