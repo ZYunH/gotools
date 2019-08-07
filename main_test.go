@@ -4,16 +4,24 @@ import (
 	"testing"
 )
 
-func TestDebugPrint(t *testing.T) {
-	DebugPrint("Test1", "Test2")
-	DebugPrint("=============")
-	DebugPrint("Test1", "\r\n", "Test2")
-	DebugPrint("=============")
-	DebugPrint("Test1", "\r\n", "Test2","\r\n")
-	DebugPrint("=============")
-	DebugPrint("Test1\r\n", "Test2\r\n")
-	DebugPrint("=============")
-	DebugPrint(123, 456)
-	DebugPrint("=============")
-	DebugPrint("", "t")
+func TestPrint(t *testing.T) {
+	Print("Test1", "Test2")
+	Print("=============")
+	Print("Test1", "\r\n", "Test2")
+	Print("=============")
+	Print("Test1", "\r\n", "Test2", "\r\n")
+	Print("=============")
+	Print("Test1\r\n", "Test2\r\n")
+	Print("=============")
+	Print(123, 456)
+	Print("=============")
+	Print("", "t")
+	Print("=============")
+}
+
+func TestDebug(t *testing.T) {
+	DebugSlice(make([]string, 10, 12))
+	Print("=============")
+	DebugString("gotools")
+	Print("=============")
 }

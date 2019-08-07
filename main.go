@@ -2,35 +2,37 @@ package gotools
 
 import (
 	"fmt"
+	"reflect"
 	"unsafe"
 )
 
-var sizeOfInt = unsafe.Sizeof(0)
+/*----------MockHeaders----------*/
+type interfaceSliceHdr struct {
+	int
+	h *reflect.SliceHeader
+}
 
 // Simple print function used for debug
-func DebugPrint(args ...interface{}) {
+func Print(args ...interface{}) {
+	if len(args) == 0 {
+		return
+	}
+
 	if !includeCRLF(args[len(args)-1]) {
 		args = append(args, "\r\n")
 	}
 
-	for _, v := range args {
-		switch v.(type) {
+	for _, arg := range args {
+		switch v := arg.(type) {
 		case string:
-			interfaceAddr := uintptr(unsafe.Pointer(&v))
-			dataPtr := interfaceAddr + sizeOfInt
-			dataAddr := *(*uintptr)(unsafe.Pointer(dataPtr)) // type:string
-
-			dataAsSlice := *(*[]byte)(unsafe.Pointer(dataAddr))
-			dataAsSliceLen := *(*int)(unsafe.Pointer(dataAddr + sizeOfInt))
-
-			if dataAsSliceLen >= 2 && !(dataAsSlice[dataAsSliceLen-1] == 10 && dataAsSlice[dataAsSliceLen-2] == 13) {
+			if len(v) >= 2 && !(v[len(v)-2:] == "\r\n") {
 				// Not include CRLF
-				print(fmt.Sprint(v), " ")
+				print(fmt.Sprint(arg), " ")
 			} else {
-				print(fmt.Sprint(v))
+				print(fmt.Sprint(arg))
 			}
 		default:
-			print(fmt.Sprint(v), " ")
+			print(fmt.Sprint(arg), " ")
 		}
 	}
 }
@@ -49,17 +51,16 @@ func includeCRLF(i interface{}) bool {
 	return false
 }
 
-// Not used, for read only
-func toAddress(v interface{}) uintptr {
-	return uintptr(unsafe.Pointer(&v))
+func DebugSlice(v interface{}) {
+	mockInterface := *(*interfaceSliceHdr)(unsafe.Pointer(&v))
+	Hdr := *(mockInterface.h)
+	Print("Data ->", Hdr.Data)
+	Print("Len ->", Hdr.Len)
+	Print("Cap ->", Hdr.Cap)
 }
 
-// Not used
-func toIntPointer(address uintptr) *int {
-	return (*int)(unsafe.Pointer(address))
-}
-
-// Not used
-func toInt(address uintptr) int {
-	return *(*int)(unsafe.Pointer(address))
+func DebugString(s string) {
+	Hdr := *(*reflect.StringHeader)(unsafe.Pointer(&s))
+	Print("Data ->", Hdr.Data)
+	Print("Len ->", Hdr.Len)
 }
