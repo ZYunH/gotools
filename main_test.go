@@ -1,6 +1,7 @@
 package gotools
 
 import (
+	"bytes"
 	"testing"
 )
 
@@ -23,5 +24,7 @@ func TestDebug(t *testing.T) {
 	DebugSlice(make([]string, 10, 12))
 	Print("=============")
 	DebugString("gotools")
+	Print("=============")
+	DebugBuffer(bytes.NewBuffer(make([]byte, 10, 12)))
 	Print("=============")
 }
