@@ -67,7 +67,7 @@ func DebugSlice(v interface{}) {
 }
 
 func DebugString(s string) {
-	Hdr := *(*reflect.StringHeader)(unsafe.Pointer(&s))
+	Hdr := (*reflect.StringHeader)(unsafe.Pointer(&s))
 	Print("Data ->", Hdr.Data)
 	Print("Len ->", Hdr.Len)
 }
@@ -84,7 +84,7 @@ const (
 
 func DebugBuffer(b *bytes.Buffer) {
 	lookupBuffer := *(*mockBuffer)(unsafe.Pointer(b))
-	buf := *(*reflect.SliceHeader)(unsafe.Pointer(&lookupBuffer.Buf))
+	buf := (*reflect.SliceHeader)(unsafe.Pointer(&lookupBuffer.Buf))
 	Print("Buffer.buf.Data", "->", buf.Data)
 	Print("Buffer.buf.Len", "->", buf.Len)
 	Print("Buffer.buf.Cap", "->", buf.Cap)
